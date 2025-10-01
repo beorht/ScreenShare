@@ -1,6 +1,4 @@
-// g++ -std=c++17 -o tui interfeyc.cpp -lftxui-component -lftxui-dom -lftxui-screen
-// g++ src/srceen_share.cpp -o screen2 -std=c++17 -I/usr/include/opencv4 -lX11 -lopencv_core -lopencv_highgui  -lopencv_imgproc -lopencv_imgcodecs -lftxui-component -lftxui-dom -lftxui-screen
-// g++ gui.cpp -o screen2 `pkg-config --cflags --libs opencv4` -lX11
+// g++ src/srceen_share.cpp -o screen_share -std=c++17 -I/usr/include/opencv4 -lX11 -lopencv_core -lopencv_highgui  -lopencv_imgproc -lopencv_imgcodecs
 
 
 #include <iostream>  // for basic_ostream::operator<<, operator<<, endl, basic_ostream, basic_ostream<>::__ostream_type, cout, ostream
@@ -48,6 +46,9 @@ bool is_port_in_use(int port);
 
 int main(int argc, char const *argv[])
 {
+
+    XInitThreads();
+
     // Открываем окно
     Display* display = XOpenDisplay(nullptr);
     if (!display) 
