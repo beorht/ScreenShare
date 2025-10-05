@@ -1,4 +1,4 @@
-// g++ src/srceen_share.cpp -o screen_share -std=c++17 -I/usr/include/opencv4 -lX11 -lopencv_core -lopencv_highgui  -lopencv_imgproc -lopencv_imgcodecs
+// g++ src/screen_share.cpp -o screen_share -std=c++17 -I/usr/include/opencv4 -lX11 -lopencv_core -lopencv_highgui  -lopencv_imgproc -lopencv_imgcodecs
 
 
 #include <iostream>  // for basic_ostream::operator<<, operator<<, endl, basic_ostream, basic_ostream<>::__ostream_type, cout, ostream
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[])
 
     std::string command;
     
-    // Getting windows list
+    // Получение список открытых окон
     unsigned long len;
     Window* list = getWindowList(display, &len, prop);
     if (!list) 
@@ -86,7 +86,7 @@ int main(int argc, char const *argv[])
 
     std::cout << "\n::: Для вывод плного экрана введите команду 'full'" << "\n\n";
 
-    // Gettings windows name
+    // Получение название окон
     for (unsigned long i = 0; i < len; ++i) 
     {
         std::string name = getWindowName(display, list[i], netWmName, utf8Str);
@@ -97,6 +97,7 @@ int main(int argc, char const *argv[])
         //std::cout << " Рабочее пространство: " << ws << "\n\n";
     }
 
+    // команда взаимодействия
     std::cout << ">>> ";
     std::cin >> command;
 
@@ -106,10 +107,12 @@ int main(int argc, char const *argv[])
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT_HOST);
-    
+
+    // Параметры сервера 
     int opt = 1;
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
+    // Подключение к серверу
     bind(server_fd, (struct sockaddr*)&address, sizeof(address));
     listen(server_fd, 5);
 
@@ -117,6 +120,7 @@ int main(int argc, char const *argv[])
 
     while (true)
     {
+
         int client_sock = accept(server_fd, nullptr, nullptr);
         if (client_sock < 0) continue;
         
@@ -129,8 +133,6 @@ int main(int argc, char const *argv[])
             std::istringstream iss(request);
             std::string method, path;
             iss >> method >> path;
-
-
 
             if (path.find("/screenshot") == 0) 
             {
